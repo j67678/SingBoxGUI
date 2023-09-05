@@ -71,7 +71,6 @@
       {
         "tag": "alidns",
         "address": "223.5.5.5",
-        "address_resolver": "cfdns",
         "detour": "direct"
       }
     ],
