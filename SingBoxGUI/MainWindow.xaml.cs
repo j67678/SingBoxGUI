@@ -50,7 +50,7 @@ namespace SingBoxGUI
 
                 taskbarIcon = new TaskbarIcon();
                 taskbarIcon.Icon = Properties.Resources.TrayIcon;
-                taskbarIcon.ToolTipText = "ConsoleGUI";
+                taskbarIcon.ToolTipText = "SingBoxGUI";
                 taskbarIcon.DoubleClickCommand = new RelayCommand(ShowMainWindow);
                 taskbarIcon.ContextMenu = new System.Windows.Controls.ContextMenu();
 
@@ -93,7 +93,7 @@ namespace SingBoxGUI
             else
             {
                 // 如果互斥体已被占用，说明已经有一个实例在运行，不启动新的实例
-                System.Windows.MessageBox.Show("已经有一个ConsoleGUI实例在运行", "ConsoleGUI", MessageBoxButton.OK, MessageBoxImage.Information);
+                System.Windows.MessageBox.Show("已经有一个SingBoxGUI实例在运行", "SingBoxGUI", MessageBoxButton.OK, MessageBoxImage.Information);
                 System.Windows.Application.Current.Shutdown();
             }
         }
