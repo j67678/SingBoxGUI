@@ -1,0 +1,158 @@
+{
+  "log": {
+    "level": "info",
+    "timestamp": false
+  },
+  "inbounds": [
+    {
+      "type": "mixed",
+      "tag": "mixed-in",
+      "listen": "127.0.0.1",
+      "listen_port": 2080,
+      "sniff": true,
+      "sniff_override_destination": false
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "selector",
+      "tag": "proxy",
+      "outbounds": [
+        "ss-a",
+        "ss-b",
+        "ss-c"
+      ],
+      "default": "ss-a"
+    },
+    {
+      "type": "shadowsocks",
+      "tag": "ss-a",
+      "server": "examplea.com",
+      "server_port": 54126,
+      "method": "2022-blake3-aes-128-gcm",
+      "password": "8JCsPssfgS8tiRwiMlhARg=="
+    },
+    {
+      "type": "shadowsocks",
+      "tag": "ss-b",
+      "server": "exampleb.com",
+      "server_port": 54126,
+      "method": "2022-blake3-aes-128-gcm",
+      "password": "8JCsPssfgS8tiRwiMlhARg=="
+    },
+    {
+      "type": "shadowsocks",
+      "tag": "ss-c",
+      "server": "examplec.com",
+      "server_port": 54126,
+      "method": "2022-blake3-aes-128-gcm",
+      "password": "8JCsPssfgS8tiRwiMlhARg=="
+    },
+    {
+      "type": "direct",
+      "tag": "direct"
+    },
+    {
+      "type": "dns",
+      "tag": "dns-out"
+    },
+    {
+      "type": "block",
+      "tag": "block"
+    }
+  ],
+  "dns": {
+    "servers": [
+      {
+        "tag": "cfdns",
+        "address": "https://1.1.1.1/dns-query",
+        "detour": "proxy"
+      },
+      {
+        "tag": "alidns",
+        "address": "223.5.5.5",
+        "address_resolver": "cfdns",
+        "detour": "direct"
+      }
+    ],
+    "rules": [
+      {
+        "geosite": "cn",
+        "domain_suffix": ".cn",
+        "server": "alidns"
+      },
+      {
+        "outbound": "any",
+        "server": "alidns"
+      },
+	  {
+        "domain": [
+          "clash.razord.top",
+          "yacd.haishan.me"
+        ],
+        "server": "local"
+      },
+      {
+        "clash_mode": "direct",
+        "server": "local"
+      }
+    ],
+    "strategy": "ipv4_only"
+  },
+  "route": {
+	"geoip": {
+      "path": "geoip.db",
+      "download_url": "https://github.com/SagerNet/sing-geoip/releases/latest/download/geoip.db",
+      "download_detour": "proxy"
+    },
+    "geosite": {
+      "path": "geosite.db",
+      "download_url": "https://github.com/SagerNet/sing-geosite/releases/latest/download/geosite.db",
+      "download_detour": "proxy"
+    },
+    "rules": [
+      {
+        "protocol": "dns",
+        "outbound": "dns-out"
+      },
+      {
+        "protocol": "quic",
+        "outbound": "block"
+      },
+      {
+        "domain_suffix": [
+          "openai.com",
+          "anthropic.com",
+          "claude.ai",
+          "bard.google.com"
+        ],
+        "outbound": "ss-c"
+      },
+      {
+        "geosite": "cn",
+        "geoip": "cn",
+        "domain_suffix": ".cn",
+        "outbound": "direct"
+      },
+	  {
+        "clash_mode": "direct",
+        "outbound": "direct"
+      },
+      {
+        "domain": [
+          "clash.razord.top",
+          "yacd.haishan.me"
+        ],
+        "outbound": "direct"
+      }
+    ],
+    "auto_detect_interface": true,
+    "final": "proxy"
+  },
+  "experimental": {
+    "clash_api": {
+      "external_controller": "127.0.0.1:9090",
+      "store_selected": false
+    }
+  }
+}
