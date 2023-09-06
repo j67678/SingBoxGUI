@@ -84,7 +84,7 @@
         "outbound": "any",
         "server": "alidns"
       },
-	  {
+      {
         "domain": [
           "clash.razord.top",
           "yacd.haishan.me"
@@ -99,7 +99,7 @@
     "strategy": "ipv4_only"
   },
   "route": {
-	"geoip": {
+    "geoip": {
       "path": "geoip.db",
       "download_url": "https://github.com/SagerNet/sing-geoip/releases/latest/download/geoip.db",
       "download_detour": "proxy"
@@ -133,7 +133,7 @@
         "domain_suffix": ".cn",
         "outbound": "direct"
       },
-	  {
+      {
         "clash_mode": "direct",
         "outbound": "direct"
       },
